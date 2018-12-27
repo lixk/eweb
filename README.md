@@ -36,8 +36,6 @@ if __name__ == '__main__':
     <script src="/service.js"></script>
 </head>
 <body>
-<input type="file" name="file" id="file">
-<button id="btn">upload</button>
 <script>
     //say hello
     service.call('hello', {'name': 'eweb'}, function(data){
