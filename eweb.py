@@ -20,7 +20,7 @@ _ROUTE_DISPATCHER = '/service/dispatcher'
 # route for service js
 _ROUTE_SERVICE_JS = '/service.js'
 # route for static resource
-_ROUTE_STATIC = '/static/<path:path>'
+_ROUTE_STATIC = '/<path:path>'
 # root dir of static resource
 _STATIC_ROOT_DIR = './static'
 
@@ -131,12 +131,11 @@ class Server(object):
         if callback:
             def on_startup():
                 while True:
-                    time.sleep(0.3)
                     try:
                         req.urlopen('http://127.0.0.1:%s%s' % (self.port, _ROUTE_SERVICE_JS))
                         break
-                    except OSError as e:
-                        print(e)
+                    except OSError:
+                        time.sleep(0.1)
                 callback()
 
             pool.submit(on_startup)

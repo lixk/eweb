@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>index</title>
+    <script src="/service.js"></script>
+    <link rel="shortcut icon" href="/favicon.ico">
+</head>
+<body>
+<input type="file" name="file" id="file">
+<button id="btn">upload</button>
+<script>
+    //say hello
+    service.call('hello', {'name': 'eweb'}, function(data){
+        alert(data);
+        /**
+        ...
+        Anything you want to do
+        ...
+        */
+    });
+
+    //upload file
+    document.getElementById('btn').onclick = function (e) {
+        service.call('user.upload', {'file': document.getElementById('file').files[0]}, function(data){
+            alert(data);
+        });
+    }
+</script>
+</body>
+</html>
