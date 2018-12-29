@@ -16,7 +16,7 @@ from urllib import request as req
 from bottle import request, Bottle, response, static_file
 
 # route for dispatcher
-_ROUTE_DISPATCHER = '/service/dispatcher'
+_ROUTE_DISPATCHER = '/service/<service_name>'
 # route for service js
 _ROUTE_SERVICE_JS = '/service.js'
 # route for static resource
@@ -31,6 +31,7 @@ _JS = """/**
 */
 window.service = {
     call: function (serviceName, data, successCallback, errorCallback) {
+        var data = data || {};
         var formData = new FormData();
         for(var key in data) { formData.append(key, data[key]); }
         successCallback = successCallback || function (data) {};
@@ -51,8 +52,7 @@ window.service = {
                 }
             }
         }
-        xhr.open('POST', '%(service_route)s', true);
-        xhr.setRequestHeader('Service-Name', serviceName);
+        xhr.open('POST', '/service/' + serviceName, true);
         xhr.send(formData);
     }
 };
@@ -84,9 +84,8 @@ class Server(object):
         # all service collection
         self.services = {}
 
-    def _dispatcher(self):
+    def _dispatcher(self, service_name):
         """dispatcher requests to the corresponding functions"""
-        service_name = request.headers.get('Service-Name', None)
         if service_name not in self.services:
             return json.dumps({'code': 404, 'message': 'Service "%s" not found!' % service_name}, ensure_ascii=False)
 
@@ -104,7 +103,7 @@ class Server(object):
     def _service_js():
         # set content type
         response.headers['Content-Type'] = 'application/javascript'
-        return _JS % {'service_route': _ROUTE_DISPATCHER}
+        return _JS
 
     def _enable_cors(self):
         response.headers['Access-Control-Allow-Origin'] = self.access_control_allow_origin
