@@ -30,6 +30,7 @@ _JS = """/**
 * service.call('user.add', {id:1, name:'Tom'}, function(data){console.log(data)});
 */
 window.service = {
+    baseUrl: '/',
     call: function (serviceName, data, successCallback, errorCallback) {
         var data = data || {};
         var formData = new FormData();
@@ -52,7 +53,7 @@ window.service = {
                 }
             }
         }
-        xhr.open('POST', '/service/' + serviceName, true);
+        xhr.open('POST', window.service.baseUrl + 'service/' + serviceName, true);
         xhr.send(formData);
     }
 };
