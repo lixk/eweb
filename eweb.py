@@ -73,7 +73,7 @@ class Server(object):
     :param access_control_allow_origin: default: `*` , allow all request.
     """
 
-    def __init__(self, host='0.0.0.0', port=None, server='waitress', access_control_allow_origin='*'):
+    def __init__(self, host='0.0.0.0', port=5000, server='waitress', access_control_allow_origin='*'):
         self._app = Bottle()
         self.host = host
         self.port = port
