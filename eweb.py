@@ -30,14 +30,14 @@ _JS = """/**
 * service.call('user.add', {id:1, name:'Tom'}, function(data){console.log(data)});
 */
 window.service = {
-    baseUrl: '/',
+    baseUrl: '%s://%s/',
     call: function (serviceName, data, successCallback, errorCallback) {
         var data = data || {};
         var formData = new FormData();
         for(var key in data) { formData.append(key, data[key]); }
         successCallback = successCallback || function (data) {};
         errorCallback = errorCallback || function (e) {console.error(e)};
-        
+
         var xhr = new XMLHttpRequest();
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4) {
@@ -102,9 +102,10 @@ class Server(object):
 
     @staticmethod
     def _service_js():
+        js = _JS % (request.urlparts.scheme, request.urlparts.netloc)
         # set content type
         response.headers['Content-Type'] = 'application/javascript'
-        return _JS
+        return js
 
     def _enable_cors(self):
         response.headers['Access-Control-Allow-Origin'] = self.access_control_allow_origin
@@ -151,4 +152,3 @@ class Server(object):
     def shutdown():
         """shutdown the server"""
         os._exit(0)
-

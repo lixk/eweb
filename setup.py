@@ -5,8 +5,8 @@ with open('README.md', 'r', encoding='utf-8') as f:
 
 setup(
     name="eweb",
-    version="0.0.5",
-    keywords=("pip", "eweb"),
+    version="0.0.6",
+    keywords=["pip", "eweb"],
     description="a fast and simple micro-framework for small web applications",
     long_description=long_description,
     long_description_content_type='text/markdown',  # This is important!
